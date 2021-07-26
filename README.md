@@ -12,7 +12,7 @@ This repository contains data and code necessary to reproduce figures from the a
 ![](./figures/figure_2_EPP_diagram.png)
 
 |    Component   |                                                       Description                                                      |                Example                |
-|:--------------:|:----------------------------------------------------------------------------------------------------------------------:|:-------------------------------------:|
+|--------------|----------------------------------------------------------------------------------------------------------------------|-------------------------------------|
 | Player_{i}     | A single i-th participant of the EPP Benchmark.                                                                        | Classification model                  |
 | Score          | A one-dimensional measure of Player’s  strength. We assume that the order  relation over Scores is given and monotonic | Accuracy                              |
 | Round_{r}      | A single game environment for Players. The  outcome of a Round_{r} are score values of  Players.                       | Cross-validation field                |
@@ -20,4 +20,4 @@ This repository contains data and code necessary to reproduce figures from the a
 | Meta-Score     | A measure of a Player’s strength aggregated  over all Rounds in a Tournament.                                          | Mean                                  |
 | Leaderboard    | The ordering of Players according to their  overall strength on all Rounds in a Tournament.                            | Mean accuracy of models over CV folds |
 | Opponent_{i,j} | Player_{j}, whose Score values are compared to the Score values of the Player_{i}.                                     | Classification model                  |
-| Match_{i,j,r}  | A single comparison of the Score values of a pair  of Players, i.e. Player_{i} and Opponent_{i,j} in  Round_{r}.       |                                       |
+| Match_{i,j,r}  | A single comparison of the Score values of a pair  of Players, i.e. Player_{i} and Opponent_{i,j} in  Round_{r}.       |                                       |                                 |
