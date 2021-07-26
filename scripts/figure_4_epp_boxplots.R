@@ -45,5 +45,5 @@ elo %>%
         text = element_text(size = 17),
         strip.text.x = element_text( margin = margin( b = 0.5, t = 0) ))
 
-ggsave('./figures/figure4_epp_boxplots.pdf', width = 10, height = 13)
+ggsave('./figures/figure_4_epp_boxplots.pdf', width = 10, height = 13)
 

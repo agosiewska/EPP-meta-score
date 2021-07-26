@@ -20,7 +20,7 @@ leaderboard_models <- leaderboard_clean %>%
 colnames(leaderboard_models) <- c("model", "measure", "value")
 leaderboard_models[["model"]] <- as.character(leaderboard_models[["model"]])
 
-elo_vtab <- calculate_elo(leaderboard_models, estimation = "glm", keep_model = TRUE)
+elo_vtab <- calculate_epp(leaderboard_models, estimation = "glm", keep_model = TRUE)
 elo_vtab[["epp"]][["model"]] <- gsub("`", "", elo_vtab[["epp"]][["model"]])
 
 plot_df <- merge(elo_vtab[["epp"]], leaderboard[-c(20,21),], by.x = "model", by.y ="Rank" ) %>%

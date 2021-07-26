@@ -12,7 +12,7 @@ dst_num <- gsub(pattern = '[^0-9]', replacement = '', x = list_files)
 ## get OpenML names
 dst <- sapply(dst_num, function(x) getOMLDataSet(as.numeric(x))$desc$name)
 
-p_model <- readRDS('.data/epp_openml_glm_models.Rd')
+p_model <- readRDS("./data/epp_openml_glm_models.Rd")
 names(p_model) <- list.files(pattern = '^elo_[0-9].+Rd$')
 
 ### check that every dataset has 6 algorithms - not at index 31 - we have to remove that
