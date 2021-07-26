@@ -1,6 +1,6 @@
 # Elo-based Predictive Power (EPP)
 
-This repository contains data and code necessary to reproduce figures from the article: Gosiewska A., Woźnica K., Biecek P. (2021). Interpretable Meta-Measure for Model Performance. arXiv:1908.09213, [https://arxiv.org/abs/2006.02293](https://arxiv.org/abs/2006.02293).
+This repository contains data and code necessary to reproduce figures from the article: Gosiewska A., Woźnica K., Biecek P. (2021). Interpretable Meta-Measure for Model Performance.
 
 
 ## Abstract
@@ -21,3 +21,21 @@ This repository contains data and code necessary to reproduce figures from the a
 | Leaderboard    | The ordering of Players according to their  overall strength on all Rounds in a Tournament.                            | Mean accuracy of models over CV folds |
 | Opponent_{i,j} | Player_{j}, whose Score values are compared to the Score values of the Player_{i}.                                     | Classification model                  |
 | Match_{i,j,r}  | A single comparison of the Score values of a pair  of Players, i.e. Player_{i} and Opponent_{i,j} in  Round_{r}.       |                                       |                                 |
+
+
+# Preprint
+
+Preprint for this work is avaliable at  [https://arxiv.org/abs/2006.02293](https://arxiv.org/abs/2006.02293).
+
+In order to cite our work please use the following BiBTeX entry
+
+```
+@article{epp,
+      title={Interpretable Meta-Measure for Model Performance}, 
+      author={Alicja Gosiewska and Katarzyna Woznica and Przemyslaw Biecek},
+      year={2020},
+      eprint={2006.02293},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
