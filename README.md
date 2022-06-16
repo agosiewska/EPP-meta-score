@@ -2,6 +2,22 @@
 
 This repository contains data and code necessary to reproduce figures from the article: Gosiewska A., Woźnica K., Biecek P. (2021). Interpretable Meta-Measure for Model Performance.
 
+# Code
+
+We created a snapshot of the environment used to generate the results included in the article. To reproduce the results, activate `renv` project and install the `EloML` package with EPP implementation.
+
+```{r}
+renv::activate()
+devtools::install_github("ModelOriented/EloML")
+```
+
+The repository contains the following folders:
+
+- folder `scripts` that contains scrpits used to generate results included in the paper and suplementary materials. The name of each script in the folder describes the figure the script generates;
+
+- folder `data` contains contains the data needed for the scripts, as well as the results of the scripts;
+
+- folder `figures` contains figures included in the paper generated with scripts.
 
 ## Abstract
 

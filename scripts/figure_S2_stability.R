@@ -58,7 +58,8 @@ epp_simulations <- lapply(unique(sim_results[["n_model"]]), function(ith_n_model
     ) %>% bind_rows
   ) %>% bind_rows  
 
-save(epp_simulations, "./data/elo_stability.Rd")
+save(epp_simulations, file = "./data/elo_stability.Rd")
+load("./data/elo_stability.Rd")
 
 epp_simulations_with_differences <- epp_simulations %>%
   group_by(player, rep, n_model) %>%
