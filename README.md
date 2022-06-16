@@ -8,7 +8,8 @@ We created a snapshot of the environment used to generate the results included i
 
 ```{r}
 renv::activate()
-devtools::install_github("ModelOriented/EloML")
+devtools::install_github("ModelOriented/EloML") 
+# or renv::install("easystats/correlation")
 ```
 
 The repository contains the following folders:
