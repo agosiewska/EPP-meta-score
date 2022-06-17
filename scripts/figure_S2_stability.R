@@ -74,6 +74,7 @@ ggplot(epp_simulations_with_differences, aes(x = max_split, y = mean_epp_differe
   facet_wrap(~n_model) +
   theme_bw() +
   xlab("Number of rounds") +
-  ylab("Mean epp difference relative to the \n previous number of rounds")
+  ylab("Mean epp difference relative to the \n previous number of rounds") + 
+  theme_light()
 
 ggsave('./figures/figure_S2_stability.pdf', width = 9, height = 5)

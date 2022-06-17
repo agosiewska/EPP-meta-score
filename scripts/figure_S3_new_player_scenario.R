@@ -156,7 +156,8 @@ data.table::rbindlist(lapply(diff_results, function(x) {
 })) %>% 
   ggplot(aes(x = as.factor(no_models), y = diff_p))+
   geom_boxplot()+
-  facet_wrap(~no_splits, nrow = 2)
+  facet_wrap(~no_splits, nrow = 2) +
+  theme_light()
 
 
 ggsave('./figures/figure_S3_new_player_scenario.pdf', width = 9, height = 5)

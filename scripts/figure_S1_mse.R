@@ -163,7 +163,8 @@ all_results %>%
   geom_boxplot()+
   facet_grid(nrounds~nplayers)+
   theme_light()+
-  scale_x_discrete(labels = c('EPP', 'EPP+Ridge', 'MEAN'), name = NULL)
+  scale_x_discrete(labels = c('EPP', 'EPP+Ridge', 'MEAN'), name = NULL) +
+  theme_light()
 
 
 ggsave('figures/figure_S1_mse.pdf', width =  10, height = 10)
