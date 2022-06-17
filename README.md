@@ -15,7 +15,9 @@ To reproduce the results, activate `renv` project and install the `EloML` packag
 
 ```{r}
 renv::activate()
-devtools::install_github("ModelOriented/EloML") 
+
+# if ELoML did not install use
+# devtools::install_github("ModelOriented/EloML") 
 # or renv::install("ModelOriented/EloML")
 ```
 
