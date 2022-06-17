@@ -4,7 +4,14 @@ This repository contains data and code necessary to reproduce figures from the a
 
 # Code
 
-We created a snapshot of the environment used to generate the results included in the article. To reproduce the results, activate `renv` project and install the `EloML` package with EPP implementation.
+We created a snapshot of the environment used to generate the results included in the article. File `renv.lock` contains version of R and versions of all used R packages. Platform used for computations was: 
+
+```
+x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 22000)
+```
+
+To reproduce the results, activate `renv` project and install the `EloML` package with EPP implementation.
 
 ```{r}
 renv::activate()
