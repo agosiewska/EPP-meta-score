@@ -72,9 +72,18 @@ ggplot(epp_simulations_with_differences, aes(x = max_split, y = mean_epp_differe
   geom_point() +
   geom_line() +
   facet_wrap(~n_model) +
-  theme_bw() +
+  theme_light() +
   xlab("Number of rounds") +
   ylab("Mean epp difference relative to the \n previous number of rounds") + 
   theme_light()
-
 ggsave('./figures/figure_S2_stability.pdf', width = 9, height = 5)
+
+
+
+ggplot(epp_simulations, aes(x = factor(n_model), y = epp)) +
+  geom_boxplot() +
+  facet_wrap(~max_split) +
+  theme_light() +
+  xlab("Number of models") +
+  ylab("EPP")
+ggsave('./figures/figure_S2_inflation.pdf', width = 9, height = 5)
