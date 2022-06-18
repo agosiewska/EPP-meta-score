@@ -157,8 +157,8 @@ all_results <- all_results %>%
 
 all_results %>% 
   tidyr::pivot_longer(cols = mse_epp:mse_epp_reg, names_to = 'type', values_to = 'MSE') %>% 
-  mutate(nplayers = paste0('nplayers = ' = nplayers),
-         nrounds = paste0('nrounds = ', nrounds)) %>% 
+  mutate(nplayers = factor(paste0('nplayers = ', nplayers), levels = paste0('nplayers = ', sort(unique(nplayers)))),
+         nrounds = factor(paste0('nrounds = ', nrounds), levels = paste0('nrounds = ', sort(unique(nrounds)) )))%>% 
   ggplot(aes(x = type, y = MSE))+
   geom_boxplot()+
   facet_grid(nrounds~nplayers)+
