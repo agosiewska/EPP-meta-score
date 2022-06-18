@@ -84,6 +84,6 @@ ggplot(epp_simulations, aes(x = factor(n_model), y = epp)) +
   geom_boxplot() +
   facet_wrap(~max_split) +
   theme_light() +
-  xlab("Number of models") +
+  xlab("Number of players") +
   ylab("EPP")
 ggsave('./figures/figure_S2_inflation.pdf', width = 9, height = 5)
