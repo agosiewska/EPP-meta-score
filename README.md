@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6659513.svg)](https://doi.org/10.5281/zenodo.6659513)
+
 # Elo-based Predictive Power (EPP)
 
 This repository contains data and code necessary to reproduce figures from the article: Gosiewska A., Woźnica K., Biecek P. (2021). Interpretable Meta-Measure for Model Performance.
