@@ -1,170 +1,89 @@
+library(MASS)
 library(EloML)
 library(dplyr)
-library(tidyr)
 library(ggplot2)
-invlogit <- function(b1, b2){
-  exp(b1-b2)/(1+exp((b1-b2)))
-}
 
-compare_mse <- function(auc_results, epp_results){
-  # browser()
-  mean_auc_df <- auc_results %>% 
-    group_by(player) %>% 
-    summarise(mean_auc = mean(auc)) 
-  
-  # browser()
-  if('elo' %in% names(epp_results)) {
-    epp_id <- 'elo'
-  }  else {epp_id <- 'epp'}
-  
-  results <- epp_results[[epp_id]] %>% 
-    tidyr::expand(tidyr::nesting(player,epp), player, .name_repair = 'universal') %>% 
-    rename(winner_model = `player...1`,
-           loser_model = `player...3`,
-           epp_winner = epp) %>% 
-    left_join(epp_results[[epp_id]], by = c('loser_model' = 'player')) %>% 
-    rename(epp_loser = epp) %>% 
-    mutate(prob = invlogit(epp_winner, epp_loser),
-           players = paste(winner_model, loser_model)) %>% 
-    filter(winner_model != loser_model) %>% 
-    left_join(epp_results$actual_score, by = 'players') %>% 
-    mutate(emp_prob = wins/match,
-           winner_model = as.character(winner_model),
-           loser_model = as.character(loser_model)) %>% 
-    left_join(mean_auc_df, by = c('winner_model' = 'player')) %>% 
-    rename(winner_mean_auc = mean_auc) %>% 
-    left_join(mean_auc_df, by = c('loser_model' = 'player')) %>% 
-    rename(loser_mean_auc = mean_auc) %>% 
-    mutate(mean_prob = ifelse(winner_mean_auc >loser_mean_auc, 1, 0))
-  
-  
-  results
-}
+no_reps <- 10
+set.seed(1)
+seeds <- sample(1:10^8, no_reps)
+no_models_list <- c(10, 50, 100, 200, 500)
+no_splits_list <- c(3, 5, 10, 15, 20, 30, 40, 50)
+max_no_splits <- max(no_splits_list)
 
-compare_mse_openml <- function(auc_results, epp_results){
-  epp_result$elo <- epp_results$elo %>% 
-    rename(player = model)
-  
-  compare_mse(auc_results, epp_results)
-}
 
-compare_mse <- function(auc_results, epp_results){
-  # browser()
-  mean_auc_df <- auc_results %>% 
-    group_by(player) %>% 
-    summarise(mean_auc = mean(auc)) 
-  
-  # browser()
-  if('elo' %in% names(epp_results)) {
-    epp_id <- 'elo'
-  }  else {epp_id <- 'epp'}
-  
-  results <- epp_results[[epp_id]] %>% 
-    tidyr::expand(tidyr::nesting(player,epp), player, .name_repair = 'universal') %>% 
-    rename(winner_model = `player...1`,
-           loser_model = `player...3`,
-           epp_winner = epp) %>% 
-    left_join(epp_results[[epp_id]], by = c('loser_model' = 'player')) %>% 
-    rename(epp_loser = epp) %>% 
-    mutate(prob = invlogit(epp_winner, epp_loser),
-           players = paste(winner_model, loser_model)) %>% 
-    filter(winner_model != loser_model) %>% 
-    left_join(epp_results$actual_score, by = 'players') %>% 
-    mutate(emp_prob = wins/match,
-           winner_model = as.character(winner_model),
-           loser_model = as.character(loser_model)) %>% 
-    left_join(mean_auc_df, by = c('winner_model' = 'player')) %>% 
-    rename(winner_mean_auc = mean_auc) %>% 
-    left_join(mean_auc_df, by = c('loser_model' = 'player')) %>% 
-    rename(loser_mean_auc = mean_auc) %>% 
-    mutate(mean_prob = ifelse(winner_mean_auc >loser_mean_auc, 1, 0))
-  
-  
-  results
+
+
+simulate_auc <- function(no_splits, mean_auc=0.8){
+  corr <- matrix(1, no_splits, no_splits) * 0.0001
+  sigma <- diag(x=0.0001, nrow=no_splits, ncol=no_splits)
+  sigma <- corr + sigma
+  mvrnorm(n = 1, mu=rep(mean_auc, no_splits), Sigma=sigma)
 }
 
 
-
-
-
-setup_simulate <- expand.grid(nplayers = c(10, 50,100, 200, 500),
-                              nrounds = c(3, 5, 10, 15, 20, 30, 40, 50),
-                              seed = c(123, 542, 981, 6, 78, 1231, 5421, 9811, 61, 781))
-setup_simulate_ls <- split(setup_simulate, 1:nrow(setup_simulate))
-results_mse <- list()
-for(setup in seq.int(setup_simulate_ls)[]){
-  # browser()
-  print(paste0('Start of experiment: ', setup, '/', length(setup_simulate_ls), ', nplayers: ', setup_simulate_ls[[setup]]$nplayers,
-               ', nrounds: ', setup_simulate_ls[[setup]]$nrounds))
-  simulated_data <- do.call(simulate_exp, as.list(setup_simulate_ls[[setup]]))
-  x_epp <- calculate_epp(simulated_data)
-  result_tmp <- compare_mse(auc_results = simulated_data %>% rename(auc = measure), 
-                            epp_results = x_epp)
-  
-  results_mse[[setup]] <- result_tmp %>% 
-    summarise(mse_epp = mean((emp_prob - prob)^2),
-              mse_mean = mean((emp_prob - mean_prob)^2))
-  
-
-}
-saveRDS(results_mse, 'data/results_mse/results_mse_simulation_ALL.Rd')
-
-
-# ADD regularization
-
-
-
-setup_simulate <- expand.grid(nplayers = c(10, 50,100, 200, 500),
-                              nrounds = c(3, 5, 10, 15, 20, 30, 40, 50),
-                              seed = c(123, 542, 981, 6, 78, 1231, 5421, 9811, 61, 781))
-setup_simulate_ls <- split(setup_simulate, 1:nrow(setup_simulate))
-results_mse_reg <- list()
-for(setup in seq.int(setup_simulate_ls)[]){
-  # browser()
-  print(paste0('Start of experiment: ', setup, '/', length(setup_simulate_ls), ', nplayers: ', setup_simulate_ls[[setup]]$nplayers,
-               ', nrounds: ', setup_simulate_ls[[setup]]$nrounds))
-  simulated_data <- do.call(simulate_exp, as.list(setup_simulate_ls[[setup]]))
-  x_epp <- calculate_epp(simulated_data, 
-                         estimation = 'glmnet',
-                         add_regularization = TRUE)
-  result_tmp <- compare_mse(auc_results = simulated_data %>% rename(auc = measure), 
-                            epp_results = x_epp)
-  
-  results_mse_reg[[setup]] <- result_tmp %>% 
-    summarise(mse_epp = mean((emp_prob - prob)^2),
-              mse_mean = mean((emp_prob - mean_prob)^2))
+sim_results <- lapply(1L:no_reps, function(ith_rep) {
+    set.seed(seeds[ith_rep])
+    lapply(no_models_list, function(ith_model_n) {
+      mean_auc_v <- runif(ith_model_n, 0.5, 0.9)
+      model_bagging_auc_list <- lapply(mean_auc_v, function(ith_mean_auc) 
+        simulate_auc(max_no_splits, mean_auc = ith_mean_auc)
+      )
+      
+      lapply(1L:length(model_bagging_auc_list), function(ith_model) {
+        lapply(no_splits_list, function(ith_split_no) {
+          splits_ids <- 1L:ith_split_no
+          data.frame(split_id = splits_ids,
+                     auc = model_bagging_auc_list[[ith_model]][splits_ids]) %>% 
+            mutate(model_id = ith_model,
+                   max_split = ith_split_no,
+                   n_model = ith_model_n,
+                   rep = ith_rep)
+        }) %>% bind_rows()
+      }) %>% bind_rows()
+    }) %>% bind_rows()
+  }) %>% bind_rows()
   
 
-}
-saveRDS(results_mse_reg, 'data/results_mse/results_mse_regularization_simulation_ALL.Rd')
+epp_simulations <- lapply(unique(sim_results[["n_model"]]), function(ith_n_model)
+    lapply(unique(sim_results[["max_split"]]), function(ith_max_split)
+      lapply(unique(sim_results[["rep"]]), function(ith_rep)
+        filter(sim_results, n_model == ith_n_model, max_split == ith_max_split, rep == ith_rep) %>% 
+          select(model_id, split_id, auc) %>% 
+          calculate_epp() %>% 
+          getElement("epp") %>% 
+          mutate(rep = ith_rep,
+                 max_split = ith_max_split,
+                 n_model = ith_n_model)
+      ) %>% bind_rows
+    ) %>% bind_rows
+  ) %>% bind_rows  
 
-##### PLOT
+save(epp_simulations, file = "./data/elo_stability.Rd")
+load("./data/elo_stability.Rd")
 
-setup_simulate <- expand.grid(nplayers = c(10, 50,100, 200, 500),
-                              nrounds = c(3, 5, 10, 15, 20, 30, 40, 50),
-                              seed = c(123, 542, 981, 6, 78, 1231, 5421, 9811, 61, 781))
-results_mse <- do.call(rbind,readRDS('data/results_mse/results_mse_simulation_ALL.Rd'))
-results_mse_reg <- do.call(rbind,readRDS('data/results_mse/results_mse_regularization_simulation_ALL.Rd'))
-colnames(results_mse_reg) <- c('mse_epp_reg', 'mse_mean_v2')
+epp_simulations_with_differences <- epp_simulations %>%
+  group_by(player, rep, n_model) %>%
+  mutate(epp_difference = epp - lag(epp)) %>%
+  ungroup()  %>%
+  group_by(rep, max_split, n_model) %>%
+  summarise(mean_epp_difference = mean(epp_difference, na.rm=TRUE))
 
-all_results <- cbind(setup_simulate, results_mse, results_mse_reg) 
-
-all_results%>% 
-  filter(mse_mean != mse_mean_v2)
-
-all_results <- all_results %>% 
-  select(-mse_mean_v2)
-
-all_results %>% 
-  tidyr::pivot_longer(cols = mse_epp:mse_epp_reg, names_to = 'type', values_to = 'MSE') %>% 
-  mutate(nplayers = factor(paste0('nplayers = ', nplayers), levels = paste0('nplayers = ', sort(unique(nplayers)))),
-         nrounds = factor(paste0('nrounds = ', nrounds), levels = paste0('nrounds = ', sort(unique(nrounds)) )))%>% 
-  ggplot(aes(x = type, y = MSE))+
-  geom_boxplot()+
-  facet_grid(nrounds~nplayers)+
-  theme_light()+
-  scale_x_discrete(labels = c('EPP', 'EPP+Ridge', 'MEAN'), name = NULL) +
+ggplot(epp_simulations_with_differences, aes(x = max_split, y = mean_epp_difference, group=rep)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~n_model) +
+  theme_light() +
+  xlab("Number of rounds") +
+  ylab("Mean epp difference relative to the \n previous number of rounds") + 
   theme_light()
+ggsave('./figures/figure_S4_stability.pdf', width = 9, height = 5)
 
 
-ggsave('figures/figure_S3_mse.pdf', width =  10, height = 10)
+
+ggplot(epp_simulations, aes(x = factor(n_model), y = epp)) +
+  geom_boxplot() +
+  facet_wrap(~max_split) +
+  theme_light() +
+  xlab("Number of players") +
+  ylab("EPP")
+ggsave('./figures/figure_S4_inflation.pdf', width = 9, height = 5)
