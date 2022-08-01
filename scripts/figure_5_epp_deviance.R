@@ -13,7 +13,7 @@ dst_num <- gsub(pattern = '[^0-9]', replacement = '', x = list_files)
 dst <- sapply(dst_num, function(x) getOMLDataSet(as.numeric(x))$desc$name)
 
 p_model <- readRDS("./data/epp_openml_glm_models.Rd")
-names(p_model) <- list.files(pattern = '^elo_[0-9].+Rd$')
+names(p_model) <- list.files(data_path, pattern = '^elo_[0-9].+csv$')
 
 ### check that every dataset has 6 algorithms - not at index 31 - we have to remove that
 which(sapply(lapply(p_model, function(x) unique(gsub(pattern = '_[0-9]+', replacement = '', rownames(coefficients(x))))), length) != 6)
@@ -40,12 +40,15 @@ idx_worst <- which.max(deviance_epp)
 name_worst <- dst[idx_worst]
 selected_datasets <- c(names(idx_best), names(idx_worst))
 
+
+### reading RDS file with all results from EPP estimation
 selected_files <- lapply(selected_datasets, readRDS)
 
-EloML::plot_wins_ratio()
+
 
 ### draw plot_wins_ratio for random sample 
 sample_random_epp <- function(epp, seed = 123, name){
+  browser()
   set.seed(seed)
   sample_model <- sample(epp$elo$model, size = floor(0.3 * length(epp$elo$model)))
   

@@ -33,7 +33,7 @@ leaderboard_models$measure_color <- factor(ifelse(
 
 leaderboard_models %>%
 ggplot(aes(model, value)) +
-  geom_boxplot(coef = 0, color = "white", fill = "lightgrey") +
+  geom_boxplot(coef = 1.5, color = "grey90", fill = "lightgrey") +
   geom_point(aes(fill = measure_color, color = measure_color), alpha = 0.5, size = 2) +
   coord_flip() +
   geom_line(aes(group = measure, color = measure_color), alpha = 0.5, size = 1)+
