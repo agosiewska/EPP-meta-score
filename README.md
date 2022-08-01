@@ -1,4 +1,5 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6660036.svg)](https://doi.org/10.5281/zenodo.6660036)
+[![DOI](https://zenodo.org/badge/383825527.svg)](https://zenodo.org/badge/latestdoi/383825527)
+
 
 
 # Elo-based Predictive Power (EPP)
