@@ -162,5 +162,5 @@ data.table::rbindlist(lapply(diff_results, function(x) {
   ylab("Difference between probability of winning")
 
 
-ggsave('./figures/figure_S3_new_player_scenario.pdf', width = 9, height = 5)
+ggsave('./figures/figure_S5_new_player_scenario.pdf', width = 9, height = 5)
 

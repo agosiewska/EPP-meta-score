@@ -45,5 +45,5 @@ ggplot(conf_df, aes(x = epp, y = Mean)) +
   xlab("EPP") +
   scale_y_continuous(expand = c(0.3, 0.3))
 
-ggsave("./figures/figure_6_VTAB_ranking.png", height = 4.5, width = 9)
+ggsave("./figures/figure_S1_VTAB_ranking.png", height = 4.5, width = 9)
 
