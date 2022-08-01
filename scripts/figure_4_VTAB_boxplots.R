@@ -44,5 +44,5 @@ ggplot(aes(model, value)) +
   ylab("Score") +
   scale_color_manual(values = c("grey", "#098208", "blue"))
 
-ggsave('./figures/figure_3_VTAB_boxplots.pdf', width = 8.4, height = 3.5)
+ggsave('./figures/figure_4_VTAB_boxplots.pdf', width = 8.4, height = 3.5)
 

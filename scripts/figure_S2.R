@@ -167,4 +167,4 @@ all_results %>%
   theme_light()
 
 
-ggsave('figures/figure_S3_mse.pdf', width =  10, height = 10)
+ggsave('figures/figure_S2_mse.pdf', width =  10, height = 10)

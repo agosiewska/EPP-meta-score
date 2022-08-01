@@ -76,7 +76,7 @@ ggplot(epp_simulations_with_differences, aes(x = max_split, y = mean_epp_differe
   xlab("Number of rounds") +
   ylab("Mean epp difference relative to the \n previous number of rounds") + 
   theme_light()
-ggsave('./figures/figure_S4_stability.pdf', width = 9, height = 5)
+ggsave('./figures/figure_S3_stability.pdf', width = 9, height = 5)
 
 
 

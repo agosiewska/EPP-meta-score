@@ -87,5 +87,5 @@ p_best <- ggplot(actual_score_bind, aes(x=ratio, y = pred_ratio, color  = algori
   guides(colour = guide_legend(override.aes = list(alpha = 1)))+
   labs(x = 'Actual empirical probability of winning', y = 'Predicted probability of winning')+
   scale_color_discrete(name='Algorithm')
-ggsave(p_best, filename = 'deviance_best_worst.pdf', device =  'pdf')
-ggsave(p_best, filename = 'deviance_best_worst.png', device =  'png', width = 8)
+ggsave(p_best, filename = 'figure_3_deviance_best_worst.pdf', device =  'pdf')
+ggsave(p_best, filename = 'figure_3_deviance_best_worst.png', device =  'png', width = 8)
